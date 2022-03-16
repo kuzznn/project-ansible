@@ -1,2 +1,6 @@
 ---
-# defaults file for user-node
+user: nginx
+comment: user for nginx
+group: nginx
+sudo: no
+keyname: nginx

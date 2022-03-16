@@ -36,11 +36,37 @@
     owner: "{{ user }}"
     group: "{{ group }}"   
     mode: 0644
-
 - name: Copy playbook user-node
-  copy:
-    src: ~/ansible/user-node.yml
-    dest: /home/{{ user }}/user-node.yml
+  template:
+    src: main.j2
+    dest: /home/{{ user }}/user-node-{{item}}.yml
     owner: "{{ user }}"
     group: "{{ group }}"   
     mode: 0644
+  with_items:
+    - nginx
+    - mysql
+  vars:
+    hostnode:
+      - nginx
+      - mysql
+    usernode:
+      - nginx
+      - mysql
+    groupnode:
+      - nginx
+      - mysql
+    keynamenode:
+      - nginx
+      - mysql
+
+- name: Create ssh key
+  openssh_keypair:
+    path: /home/{{ user }}/{{ item }}
+    owner: "{{ user }}"
+    group: "{{ group }}"  
+    mode: 0400
+    force: no
+  with_items:
+    - nginx
+    - mysql

@@ -1,11 +1,11 @@
 ---
 - name: Create user and Generate SSH Key for user.
-  hosts: nginx
+  hosts: {{usernode}}
   become: yes
   roles:
     - role: user-node
   vars:
-    user: nginx
-    group: nginx
+    user: {{usernode}}
+    group: {{usernode}}
     sudo: no
-    keyname: nginx
+    keyname: {{usernode}}

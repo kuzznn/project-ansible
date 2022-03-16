@@ -15,7 +15,6 @@
 - name: Create user 
   user:
     name: "{{ user }}"
-    comment: "{{ comment }}" 
     group: "{{ group }}"
     createhome: yes
     append: yes
@@ -27,11 +26,8 @@
     append: yes
   when: sudo == "yes"
 
-- name: Generate ssh key
-  
-
 - name: Add key 
   authorized_key:
     user: "{{ user }}"
     state: present
-    key: "{{ pubkey }}"
+    key: "{{ lookup('file', '/home/ansible/{{keyname}}.pub') }}"

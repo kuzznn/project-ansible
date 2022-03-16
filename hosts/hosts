@@ -5,10 +5,11 @@
 192.168.56.20 ansible_ssh_user=vagrant ansible_ssh_private_key_file=/home/nma/demo/infra-ansible/.vagrant/machines/nginx.nma.local/virtualbox/private_key
 [ansible]
 192.168.56.10 ansible_ssh_user=vagrant ansible_ssh_private_key_file=/home/nma/demo/infra-ansible/.vagrant/machines/ansible.nma.local/virtualbox/private_key
-[aws]
-18.119.130.125 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=./keys/namtp.pem
 [gateway]
 192.168.56.10 ansible_ssh_user=ansible ansible_ssh_private_key_file=./keys/id_rsa
+
+[aws]
+18.119.130.125 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=./keys/namtp.pem
 [local:children]
 mysql
 nginx
