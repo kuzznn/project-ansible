@@ -28,14 +28,16 @@
     owner: "{{ user }}"
     group: "{{ group }}"  
     mode: 0644
+    force: no
 
 - name: Add hostfile 
   template: 
     src: hosts.j2
-    dest: /home/{{ user }}/hosts
+    dest: /home/{{ user }}/host
     owner: "{{ user }}"
     group: "{{ group }}"   
     mode: 0644
+
 - name: Copy playbook user-node
   template:
     src: main.j2
@@ -44,21 +46,7 @@
     group: "{{ group }}"   
     mode: 0644
   with_items:
-    - nginx
-    - mysql
-  vars:
-    hostnode:
-      - nginx
-      - mysql
-    usernode:
-      - nginx
-      - mysql
-    groupnode:
-      - nginx
-      - mysql
-    keynamenode:
-      - nginx
-      - mysql
+    - "{{usernode}}"
 
 - name: Create ssh key
   openssh_keypair:
@@ -68,5 +56,17 @@
     mode: 0400
     force: no
   with_items:
-    - nginx
-    - mysql
+    - "{{usernode}}"
+
+- name: Run playbook add user and key into node
+  shell: ansible-playbook user-node-{{item}}.yml
+  with_items:
+    - "{{usernode}}"
+    
+- name: Add ip into hosts file
+  lineinfile:
+    path: ./hosts
+    line: |
+      [{{usernode}}]
+      {{ip}} ansible_ssh_user={{usernode}} ansible_ssh_private_key_file=/home/ansible/{{usernode}}
+    create: yes
