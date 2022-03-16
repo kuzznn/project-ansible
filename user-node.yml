@@ -1,0 +1,6 @@
+---
+- name: Create user and Generate SSH Key for user.
+  hosts: all
+  become: yes
+  role:
+    - role: user-node

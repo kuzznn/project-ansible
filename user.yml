@@ -1,0 +1,6 @@
+---
+- name: User 
+  hosts: ansible
+  become: yes
+  roles:
+    - role: add-key

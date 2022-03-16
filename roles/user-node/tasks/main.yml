@@ -1,0 +1,37 @@
+---
+- name: Ensure group exists
+  group:
+    name: "{{ group }}"
+    state: present
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  # when: sudo == "yes"
+
+- name: Create user 
+  user:
+    name: "{{ user }}"
+    comment: "{{ comment }}" 
+    group: "{{ group }}"
+    createhome: yes
+    append: yes
+
+- name: Add user into sudo
+  user:
+    name: "{{ user }}"
+    groups: wheel
+    append: yes
+  when: sudo == "yes"
+
+- name: Generate ssh key
+  
+
+- name: Add key 
+  authorized_key:
+    user: "{{ user }}"
+    state: present
+    key: "{{ pubkey }}"

@@ -1,0 +1,5 @@
+- name: Config host Gateway
+  hosts: gateway
+  become: yes
+  roles:
+    - role: ansible

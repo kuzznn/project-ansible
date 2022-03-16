@@ -1,0 +1,4 @@
+---
+inventory: ./hosts
+user: ansible
+group: admin

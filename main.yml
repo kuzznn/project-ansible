@@ -1,0 +1,6 @@
+---
+- name: test
+  hosts: aws
+  become: yes
+  roles:
+    - role: mysql
