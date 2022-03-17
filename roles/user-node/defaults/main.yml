@@ -2,5 +2,5 @@
 user: nginx
 comment: user for nginx
 group: nginx
-sudo: no
+sudo: yes
 keyname: nginx

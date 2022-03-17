@@ -1,2 +1,10 @@
 ---
-# handlers file for mysql
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+
+- name: restart mysql
+  service:
+    name: mysqld
+    state: restarted

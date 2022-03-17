@@ -1,0 +1,6 @@
+---
+- name: Playbook
+  hosts: {{usernode}}
+  become: yes
+  roles:
+    - role: user-mysql

@@ -3,46 +3,70 @@
   get_url:
     url: http://repo.mysql.com/mysql80-community-release-el8.rpm
     dest: /tmp
-- name: Install Mysql Community
-  shell: /bin/rpm -Uvh /tmp/mysql80-community-release-el8.rpm
+# - name: Install Mysql Community
+#   shell: /bin/rpm -Uvh /tmp/mysql80-community-release-el8.rpm
 
 - name: Install MySQL Server
-  yum: name={{item}} state=present
-  with_items:
+  yum: 
+    name: '{{item}}'
+    state: present
+  loop:
   - mysql
   - mysql-server
-- name: run Mysql
-  service: name=mysqld state=started enabled=yes
-- name: Install python3
-  dnf: name=python3 state=latest
+  - firewalld
+  - python3
+
+- name: run Service
+  service: 
+    name: '{{item}}'
+    state: started 
+    enabled: yes
+  loop:
+  - mysqld
+  - firewalld
+
+- name: Open port 3306
+  firewalld:
+    zone: public
+    port: '{{item}}'
+    immediate: true
+    permanent: yes
+    state: enabled
+  loop:
+  - 22/tcp
+  - 3306/tcp
+  notify: restart firewalld
 
 - name: install PyMySQL
-  pip: name=pymysql state=present
+  pip: 
+    name: pymysql 
+    state: present
 
-- name: Start MySQL Server and enable it
-  service: name=mysqld state=started enabled=yes
+- name: Change root password
+  mysql_user: 
+    name: root 
+    password: "{{ dbpass }}" 
+    priv: "*.*:ALL,GRANT"
 
-- name: Remove anonymous user account for localhost
-  mysql_user:
-    name: ''
-    host: localhost
+- name: copy .my.cnf file with root password credentials
+  template: 
+    src: my.cnf.j2 
+    dest: ~/.my.cnf 
+    owner: root 
+    mode: 0600
+  notify: restart mysql
+
+- name: Remove the test database
+  mysql_db: 
+    name: test 
     state: absent
-# - name: Set MySQL root Password
-#   mysql_user:
-#     login_host: 'localhost'
-#     login_user: 'root'
-#     login_password: ''
-#     name: 'root'
-#     password: '12345'
-#     state: present
-- name: Create user
-  mysql_user:
-    name: nam
-    password: 12345
-    host: 10.10.5.147
-    priv: '*.*:ALL,GRANT'
-    state: present
-- name: Cteate database
-  mysql_db:
-    name: test
-    state: present
+
+- name: ensure anonymous users are not in the database
+  mysql_user: 
+    name: '' 
+    host: '{{ item }}' 
+    state: absent
+  with_items:
+    - 127.0.0.1
+    - localhost
+

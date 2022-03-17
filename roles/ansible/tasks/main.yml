@@ -20,7 +20,29 @@
     owner: "{{ user }}"
     group: "{{ group }}"   
     mode: 0644
+- name: Copy private key
+  copy: 
+    src: ~/ansible/keys/namtp
+    dest: /home/{{ user }}/namtp
+    owner: "{{ user }}"
+    group: "{{ group }}"   
+    mode: 0400
+- name: Create file playbook
+  template:
+    src: playbook.j2
+    dest: /home/{{ user }}/{{usernode}}.yml
+    owner: "{{ user }}"
+    group: "{{ group }}"   
+    mode: 0644
 
+- name: Create file playbook user-mysql
+  template:
+    src: usermysql.j2
+    dest: /home/{{ user }}/usermysql.yml
+    owner: "{{ user }}"
+    group: "{{ group }}"   
+    mode: 0644
+  when: usernode == 'mysql'
 - name: Add ansible.cfg
   template:
     src: ansible.cfg.j2
@@ -59,7 +81,7 @@
     - "{{usernode}}"
 
 - name: Run playbook add user and key into node
-  shell: ansible-playbook user-node-{{item}}.yml
+  shell: ansible-playbook -i "./host" user-node-{{item}}.yml
   with_items:
     - "{{usernode}}"
     
@@ -68,5 +90,10 @@
     path: ./hosts
     line: |
       [{{usernode}}]
-      {{ip}} ansible_ssh_user={{usernode}} ansible_ssh_private_key_file=/home/ansible/{{usernode}}
+      {{ip}} ansible_ssh_user={{usernode}} ansible_ssh_private_key_file=/home/{{user}}/{{usernode}}
     create: yes
+
+- name: Remove private key
+  file:
+    path: /home/{{ user }}/namtp
+    state: absent

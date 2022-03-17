@@ -1,2 +1,5 @@
+ansible-galaxy collection install community.general
 ansible-galaxy collection install community.crypto
 ansible-playbook user-node.yml -e "hosts=mysql user=mysql group mysql keyname=mysql"
+ansible-galaxy collection install ansible.posix
+

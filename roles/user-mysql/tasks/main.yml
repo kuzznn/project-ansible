@@ -1,0 +1,22 @@
+---
+- name: Check user is exists
+  mysql_user: 
+    name: '{{ item }}'  
+    state: absent
+  loop:
+  - '{{ dbuser }}'
+- name: Create user {{ dbuser }}
+  mysql_user:
+    name: '{{ item.dbuser }}'
+    host: '%'
+    password: '{{ item.dbpasswd }}'
+    priv: '{{ dbname }}.*:ALL,GRANT'
+    state: present
+  loop:
+  - { dbuser: '{{ dbuser }}', dbpasswd: '{{ dbpasswd }}', dbname: '{{ dbname}}' }
+- name: Create database for user {{ dbuser }}
+  mysql_db:
+    name: '{{ item }}'
+    state: present
+  loop:
+  - '{{ dbname }}'

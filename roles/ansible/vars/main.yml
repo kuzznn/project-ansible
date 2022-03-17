@@ -1,4 +1,4 @@
 ---
-inventory: ./host
+inventory: ./hosts
 user: ansible
 group: admin

@@ -1,0 +1,4 @@
+---
+dbuser: test
+dbpasswd: 'nam^&*678'
+dbname: namtest

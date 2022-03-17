@@ -1,0 +1,9 @@
+---
+- name: Playbook
+  hosts: {{usernode}}
+  become: yes
+  roles:
+    - role: {{usernode}}
+  vars:
+    user: {{usernode}}
+    group: {{usernode}}
