@@ -3,6 +3,10 @@
   group:
     name: "{{ group }}"
     state: present
+- name: Istall sudo 
+  yum: 
+    name: sudo
+    state: latest
 - name: Allow 'wheel' group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers

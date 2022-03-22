@@ -1,10 +1,10 @@
 ---
 - name: restart firewalld
-  service:
+  systemd:
     name: firewalld
     state: restarted
 
 - name: restart mysql
-  service:
+  systemd:
     name: mysqld
     state: restarted

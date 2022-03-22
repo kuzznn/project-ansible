@@ -1,33 +1,36 @@
 ---
+- name: Install epel
+  yum: 
+    name: epel-release
+    state: present
 - name: Install nginx
   yum:
     name: '{{ item }}'
     state: present
   loop:
   - nginx
-  - firewalld
+
 - name: Enable service
-  service:
+  systemd:
     name: '{{item}}'
     state: started
     enabled: yes
   loop:
   - nginx
-  - firewalld
 
-- name: Open port 80/443
-  firewalld:
-    zone: public
-    port: '{{item}}'
-    immediate: true
-    permanent: yes
-    state: enabled
-  loop:
-  - 80/tcp
-  - 443/tcp
-  - 22/tcp
-  - 3306/tcp
-  notify: restart firewalld
+# - name: Open port 80/443
+#   firewalld:
+#     zone: public
+#     port: 'item'
+#     immediate: true
+#     permanent: yes
+#     state: enabled
+  # loop:
+  # - 80/tcp
+  # - 443/tcp
+  # - 22/tcp
+  # - 3306/tcp
+  # notify: restart firewalld
 
 - name: Copy config file into conf.d
   template:

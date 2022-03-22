@@ -11,31 +11,28 @@
     name: '{{item}}'
     state: present
   loop:
-  - mysql
-  - mysql-server
-  - firewalld
+  - mariadb
+  - mariadb-server
   - python3
 
 - name: run Service
-  service: 
+  systemd: 
     name: '{{item}}'
     state: started 
     enabled: yes
   loop:
   - mysqld
-  - firewalld
-
-- name: Open port 3306
-  firewalld:
-    zone: public
-    port: '{{item}}'
-    immediate: true
-    permanent: yes
-    state: enabled
-  loop:
-  - 22/tcp
-  - 3306/tcp
-  notify: restart firewalld
+# - name: Open port 3306
+#   firewalld:
+#     zone: public
+#     port: ''
+#     immediate: true
+#     permanent: yes
+#     state: enabled
+#   loop:
+#   - 22/tcp
+#   - 3306/tcp
+#   notify: restart firewalld
 
 - name: install PyMySQL
   pip: 
