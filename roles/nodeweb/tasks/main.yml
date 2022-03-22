@@ -1,2 +1,9 @@
 ---
-# tasks file for nodeweb
+- name: Install packages
+  yum:
+    name: '{{ item }}'
+    state: latest
+  loop:
+  - epel-release
+  - npm
+  

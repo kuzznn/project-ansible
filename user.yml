@@ -1,6 +1,12 @@
 ---
 - name: User 
-  hosts: ansible
+  hosts: docker
   become: yes
   roles:
     - role: add-key
+  vars:
+  - user: jenkins
+  - group: docker
+  - comment: Phuong Nam
+  - pubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBTjZdGEs++hGSaPRuiezkV+OY2e0CynzZaNd9ipNOcgBh5XNMC+cgQptKpbTXduIH02bE5ViRTzNU25vRgUyhfKFo1xAJjea0XqyLLByQBo8Q4yyMpNHH3zwQbvhmES/cEH57ojHLtvt46zmmnouR5okCp0Cj5Y+yaYC7+pXmw9tARwujWnycJFKsH6K3PY3vs2vsBp/5YYX5JyAz+R356vVJhoU5sno4u7xWpCkVFLU7E/k+eHPv/XbY15ZN5O8gEq+rCWZTocn+IB2J4PDrys1Q90HSiYHjyRVSal6KUQgFgnFHbRcYxt7ybyJzGky3fzGNvq13OqQgorIsheeHFDSN/SyT5VRbGbfhcIOi7neYmDEjkT/kq+/tKDVKIz7NCh2f6JdbKnSyHKOwyqJGX+hQ8wK7L3Q5LpJA5c6qRUipKHNUSw4a10nTzI+NspE6FpbC3AxWlp4OdE96Heecd0jTtIVuH2vuCw6pOVevEepi0J2mdxFxcVLztaBxTQTh/1FoS6zYpRLoN2nwbA5TeLGjc6RisAj5XWGMHD+6fyOolOGcpFh8EeCAF9JxnA135Qa4pxef8gk4n+f0isyIy+BYgnU9MyjPIQTVtE4/EeY1WoC3coKvoReXvtM/ijworUShONXhkgWtz/A1fLxkmCSpdO2nKoQtpCwjrLE7ew== namtp
+  - sudo: "yes"

@@ -1,0 +1,6 @@
+# Ignore all logs
+*.log
+
+# Ignore keys
+
+**/keys

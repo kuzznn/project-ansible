@@ -1,0 +1,33 @@
+---
+- name: Remove old version docker
+  dnf:
+    name: '{{ item }}'
+    state: absent
+  loop: 
+  - docker-client
+  - docker-client-latest
+  - docker-common
+  - docker-latest
+  - docker-latest-logrotate
+  - docker-logrotate
+  - docker-engine
+
+- name: Add docker repository
+  shell: |
+    dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install latest docker version.
+  dnf:
+    name: '{{ item }}'
+    state: present
+  loop:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  notify: Start and enable docker
+
+- name: Add user into group
+  user:
+    name: '{{ user }}'
+    groups: docker
+    append: yes

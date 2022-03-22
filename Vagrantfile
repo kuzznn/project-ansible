@@ -16,26 +16,31 @@ DOMAIN = vconfig['vagrant_domain_name']
 RAM = vconfig['vagrant_memory']
 PUBKEY = vconfig['ssh_key_pub']
 servers=[
+  # 
+  #   :hostname => "nginx." + "#{DOMAIN}",
+  #   :ip => "#{BRIDGE_NET}" + "20",
+  #   :ram => 1024
+  #   ,
+  # 
+  #   :hostname => "mysql." + "#{DOMAIN}",
+  #   :ip => "#{BRIDGE_NET}" + "30",
+  #   :ram => "#{RAM}" 
+  # ,
   {
-    :hostname => "nginx." + "#{DOMAIN}",
-    :ip => "#{BRIDGE_NET}" + "20",
-    :ram => 1024
-    },
-  {
-    :hostname => "mysql." + "#{DOMAIN}",
-    :ip => "#{BRIDGE_NET}" + "30",
+    :hostname => "dockers." + "#{DOMAIN}",
+    :ip => "#{BRIDGE_NET}" + "40",
     :ram => "#{RAM}" 
-  },
-  {
-    :hostname => "ansible." + "#{DOMAIN}",
-    :ip => "#{BRIDGE_NET}" + "10",
-    :ram => "#{RAM}",
-    # :install_ansible => "./artefacts/scripts/install_ansible_centos.sh", 
-    
-    # :config_ansible => "./artefacts/scripts/config_ansible.sh",
-    # :source =>  "./artefacts/.",
-    # :destination => "/home/vagrant/"
   }
+  # # 
+  # #   :hostname => "ansible." + "#{DOMAIN}",
+  # #   :ip => "#{BRIDGE_NET}" + "10",
+  # #   :ram => "#{RAM}",
+  #   # :install_ansible => "./artefacts/scripts/install_ansible_centos.sh", 
+    
+  #   # :config_ansible => "./artefacts/scripts/config_ansible.sh",
+  #   # :source =>  "./artefacts/.",
+  #   # :destination => "/home/vagrant/"
+  # 
 ]
 $script = <<-SCRIPT
 sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
