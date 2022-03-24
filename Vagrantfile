@@ -27,7 +27,7 @@ servers=[
   #   :ram => "#{RAM}" 
   # ,
   {
-    :hostname => "dockers." + "#{DOMAIN}",
+    :hostname => "docker." + "#{DOMAIN}",
     :ip => "#{BRIDGE_NET}" + "40",
     :ram => "#{RAM}" 
   }
@@ -60,7 +60,7 @@ Vagrant.configure(2) do |config|
       node.vm.box_version = vconfig['vagrant_box_version']
       node.vm.hostname = machine[:hostname]
       node.vm.network "private_network", ip: machine[:ip]
-      node.vm.provision :shell,inline: $script
+      # node.vm.provision :shell,inline: $script
       node.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.cpus = vconfig['vagrant_cpu']

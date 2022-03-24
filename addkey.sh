@@ -11,7 +11,7 @@ if [ $# -eq 0 ]; then
   exit
 fi
 
-
+         
 if [ -z "${username}" ]; then
 	echo "Please provide valid user name"
 	echo -e $help
@@ -31,6 +31,7 @@ if [ ! -f "${path_to_public_key}" ]; then
 fi
 
 useradd -c "Temp user" -m  ${username}
+usermod -aG wheel ${username}
 cd /home/${username}
 mkdir .ssh
 chmod 700 .ssh
