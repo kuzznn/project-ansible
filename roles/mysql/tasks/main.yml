@@ -3,17 +3,19 @@
   get_url:
     url: http://repo.mysql.com/mysql80-community-release-el8.rpm
     dest: /tmp
-# - name: Install Mysql Community
-#   shell: /bin/rpm -Uvh /tmp/mysql80-community-release-el8.rpm
 
+- name: Install Mysql Community
+  shell: /bin/rpm -Uvh /tmp/mysql80-community-release-el8.rpm
+  
 - name: Install MySQL Server
   yum: 
     name: '{{item}}'
     state: present
   loop:
-  - mariadb
-  - mariadb-server
+  - mysql
+  - mysql-server
   - python3
+  - firewalld
 
 - name: run Service
   systemd: 
@@ -22,10 +24,11 @@
     enabled: yes
   loop:
   - mysqld
+  #- firewalld
 # - name: Open port 3306
 #   firewalld:
 #     zone: public
-#     port: ''
+#     port: '{{ item }}'
 #     immediate: true
 #     permanent: yes
 #     state: enabled

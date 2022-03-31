@@ -1,0 +1,31 @@
+---
+# Variable for /etc/php.ini
+post_max_size: '64'
+memory_limit: '256'
+max_execution_time: '300'
+upload_max_filesize: '32'
+date_timezone: 'Asia/Ho_Chi_Minh'
+
+# Variable for /etc/php-fpm.d/www.conf
+user: 'nginx'
+group: 'nginx'
+listen: '/run/php-fpm/www.sock'
+listen_mode: '0660'
+
+# Variable for wp-config.php
+DB_NAME: 'web'
+DB_USER: 'web'
+DB_PASSWORD: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64303766363665633266656663333630653634376532383564613132333032306639343032343931
+          6339646535346463656433616239613939363162316465350a616563656532306339356137663634
+          61373861353665643137626238356264386538353432396266366631646361373865306337656537
+          3566383465613461620a386137386633613366633031626561313631326334643065323531393532
+          3339
+DB_HOST: 'localhost'
+
+# Variable for /etc/nginx/conf.d/wordpress.conf
+port_listen: '80'
+link_root: '/var/www/html/wordpress'
+server_name: 'wp.kuzzn.me www.wp.kuzzn.me' #replace ansible default ipv4 with your hostname
+ 

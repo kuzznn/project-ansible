@@ -1,0 +1,25 @@
+---
+- rpm_key:
+      state: present
+      key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+
+- name: Install epel-release
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+
+- name: Install certbot
+  dnf: 
+    name: '{{ item }}'
+    state: present
+  loop:
+  - certbot
+  - python3-certbot-nginx
+
+- name: Install certificates
+  shell:
+    sudo certbot --nginx -n --agree-tos -d {{ server_name }} -m {{ certbot_mail }}
+
+- name: Renew certificates
+  shell:
+    sudo certbot renew --cert-name {{ server_name }}

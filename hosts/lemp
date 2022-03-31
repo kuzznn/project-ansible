@@ -1,0 +1,6 @@
+[php]
+192.168.56.30 ansible_ssh_user=vagrant ansible_ssh_private_key_file=./keys/namtp.pem
+[mysql]
+192.168.56.20 ansible_ssh_user=vagrant ansible_ssh_private_key_file=./keys/namtp.pem
+[nginx]
+192.168.56.10 ansible_ssh_user=vagrant ansible_ssh_private_key_file=./keys/namtp.pem

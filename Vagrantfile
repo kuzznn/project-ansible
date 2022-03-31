@@ -16,21 +16,21 @@ DOMAIN = vconfig['vagrant_domain_name']
 RAM = vconfig['vagrant_memory']
 PUBKEY = vconfig['ssh_key_pub']
 servers=[
-  # 
-  #   :hostname => "nginx." + "#{DOMAIN}",
-  #   :ip => "#{BRIDGE_NET}" + "20",
-  #   :ram => 1024
-  #   ,
-  # 
+  {
+    :hostname => "nginx." + "#{DOMAIN}",
+    :ip => "#{BRIDGE_NET}" + "10",
+    :ram => 1024
+   } 
+  # {
   #   :hostname => "mysql." + "#{DOMAIN}",
+  #   :ip => "#{BRIDGE_NET}" + "20",
+  #   :ram => "#{RAM}" 
+  # },
+  # {
+  #   :hostname => "php." + "#{DOMAIN}",
   #   :ip => "#{BRIDGE_NET}" + "30",
   #   :ram => "#{RAM}" 
-  # ,
-  {
-    :hostname => "docker." + "#{DOMAIN}",
-    :ip => "#{BRIDGE_NET}" + "40",
-    :ram => "#{RAM}" 
-  }
+  # }
   # # 
   # #   :hostname => "ansible." + "#{DOMAIN}",
   # #   :ip => "#{BRIDGE_NET}" + "10",
@@ -43,8 +43,6 @@ servers=[
   # 
 ]
 $script = <<-SCRIPT
-sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
-sudo systemctl restart sshd;
 sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 SCRIPT
@@ -60,7 +58,7 @@ Vagrant.configure(2) do |config|
       node.vm.box_version = vconfig['vagrant_box_version']
       node.vm.hostname = machine[:hostname]
       node.vm.network "private_network", ip: machine[:ip]
-      # node.vm.provision :shell,inline: $script
+      node.vm.provision :shell,inline: $script
       node.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.cpus = vconfig['vagrant_cpu']

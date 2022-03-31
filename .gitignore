@@ -5,3 +5,6 @@
 
 keys/
 keys/namtp
+jenkins/
+.ssh/
+.vagrant/

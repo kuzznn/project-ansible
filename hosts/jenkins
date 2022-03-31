@@ -1,0 +1,5 @@
+[aws]
+18.162.147.166
+[aws:vars]
+ansible_ssh_user=jenkins
+ansible_ssh_private_key_file=~/.ssh/namtp.pem

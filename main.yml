@@ -1,0 +1,22 @@
+- name: Install Lemp
+  hosts: all
+  become: yes
+  roles:
+    - mysql
+    - user-mysql
+    - nginx
+    - wordpress
+    - certbot
+  vars:
+    # Variable for set up user db
+    dbuser: web
+    dbpasswd: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31333335653266333230623933346461383839363263366536613839346261383462623561386464
+          3163363561333836336533383365356136346338626633660a663837396630383634316231343737
+          66366165393738623239383936373030653662373565346165386166323931626431653536386436
+          3138323036393566300a313636396135666263346535636134396666323365373761346338366331
+          3365
+    dbname: web
+    server_name: 'wp.kuzzn.me'
+    certbot_mail: 'namtp@rising-stars.vn'

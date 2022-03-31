@@ -1,0 +1,81 @@
+---
+- rpm_key:
+      state: present
+      key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+- name: Install epel-release
+  dnf:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+
+# - name: Enable epel
+#   shell: |
+#     dnf config-manager --set-enabled codeready-builder-for-rhel-8-rhui-rpms
+#   when: ansible_os_family == 'RedHat'
+
+# - name: Enable epel
+#   shell: |
+#     dnf config-manager --set-enabled PowerTools
+#   when: ansible_os_family == 'CentOS'
+
+- name: Select version php
+  shell: |
+    dnf module enable php:7.4 -y
+
+- name: Install php
+  dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - php
+    - php-fpm
+    - php-mysqlnd
+    - php-cli
+    - php-common 
+    - php-mbstring 
+    - php-gd 
+    - php-intl 
+    - php-xml 
+    - php-json
+    - unzip
+- name: Download WordPress
+  get_url:
+    url: https://wordpress.org/latest.zip
+    dest: /tmp/latest.zip
+
+- name: Extract Wordpress to /var/www/html/
+  shell: |
+    unzip /tmp/latest.zip -d /var/www/html/
+
+- name: Insert file wp-config.php
+  template:
+    src: wp-sample-config.php.j2
+    dest: /var/www/html/wordpress/wp-config.php
+
+- name: Remove files config
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/php.ini
+    - /etc/php-fpm.d/www.conf
+    - /etc/nginx/conf.d/wordpress.conf
+    - /etc/nginx/nginx.conf
+
+- name: Insert file config
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: php.ini.j2, dest: /etc/php.ini }
+    - { src: www.conf.j2, dest: /etc/php-fpm.d/www.conf }
+    - { src: wordpress.conf.j2, dest: /etc/nginx/conf.d/wordpress.conf }
+    - { src: nginx.conf.j2, dest: /etc/nginx/nginx.conf }
+  notify:
+    - restart nginx
+    - restart php-fpm
+
+- name: Chown files for nginx
+  file:
+    path: /var/www/html/wordpress
+    owner: nginx
+    group: nginx

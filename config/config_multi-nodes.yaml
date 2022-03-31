@@ -1,5 +1,5 @@
-vagrant_box: "centos/stream8"
-vagrant_box_version: "20210210.0"
+vagrant_box: "centos/8"
+vagrant_box_version: "2011.0"
 vagrant_ip: 192.168.56.
 vagrant_hostname: vagrant
 vagrant_memory: 2096
